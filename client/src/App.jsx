@@ -2,7 +2,8 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
 
 import {
-  Home
+  Home,
+  about
 } from './pages';
 
 import SharedLayout from './components/SharedLayout';
