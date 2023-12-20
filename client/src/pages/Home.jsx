@@ -1,8 +1,5 @@
-import Footer from '../components/Footer'
-import NavHead from '../components/navbar/NavHead'
-import Footer from '../components/Footer'
-
+import React from 'react'
 const Home = () => {
-  return <NavHead />
+  return <div>hello</div>
 }
 export default Home

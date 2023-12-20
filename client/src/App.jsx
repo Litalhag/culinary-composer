@@ -1,13 +1,9 @@
+import React from 'react'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
+import { Home, About, PageNotFound } from './pages'
 
-import {
-  Home,
-  about
-} from './pages';
-
-import SharedLayout from './components/SharedLayout';
-
+import SharedLayout from './components/SharedLayout'
 
 const routes = [
   {
@@ -16,7 +12,7 @@ const routes = [
     children: [
       {
         index: true,
-        element: <Home />
+        element: <Home />,
       },
       {
         path: 'about',
@@ -24,15 +20,14 @@ const routes = [
       },
       {
         path: '*',
-        element: <NotFound />
-      }
-    ]
-  }
-
-];
+        element: <PageNotFound />,
+      },
+    ],
+  },
+]
 
 function App() {
-  const router = createBrowserRouter(routes);
+  const router = createBrowserRouter(routes)
   return (
     <>
       <RouterProvider router={router} />
@@ -41,4 +36,3 @@ function App() {
 }
 
 export default App
-
