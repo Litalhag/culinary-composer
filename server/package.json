@@ -3,10 +3,19 @@
   "version": "1.0.0",
   "description": "culinary composer with openai api",
   "main": "server.js",
+  
   "scripts": {
     "start": "NODE_ENV=production node server",
     "dev": "nodemon server"
   },
   "author": "culinary composers group",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "nodemon": "^3.0.2",
+    "openai": "^4.24.0"
+  }
 }
