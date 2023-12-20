@@ -1,0 +1,12 @@
+{
+  "name": "culinary-composer",
+  "version": "1.0.0",
+  "description": "culinary composer with openai api",
+  "main": "server.js",
+  "scripts": {
+    "start": "NODE_ENV=production node server",
+    "dev": "nodemon server"
+  },
+  "author": "culinary composers group",
+  "license": "ISC"
+}
