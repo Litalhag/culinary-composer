@@ -53,10 +53,10 @@ const NavHead = () => {
 
           {/* Register, Login) */}
           <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center' }}>
-            <Button component={Link} to="/about" color="inherit" sx={{ mx: 1 }}>
+            <Button component={Link} to="/register" color="inherit" sx={{ mx: 1 }}>
               Register
             </Button>
-            <Button component={Link} to="/about" color="inherit" sx={{ mx: 1 }}>
+            <Button component={Link} to="/login" color="inherit" sx={{ mx: 1 }}>
               Login
             </Button>
           </Box>
