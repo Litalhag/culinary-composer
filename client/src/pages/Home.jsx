@@ -1,5 +1,10 @@
 import React from 'react'
+import Showcase from '../components/Showcase'
 const Home = () => {
-  return <div>hello</div>
+  return (
+    <>
+      <Showcase />
+    </>
+  )
 }
 export default Home
