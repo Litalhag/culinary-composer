@@ -1,23 +1,17 @@
 import dotenv from "dotenv";
 
 import express from "express";
-import { OpenAI, toFile } from "openai";
+import { OpenAI } from "openai";
 import cors from "cors";
 import multer from "multer";
 import fs from "fs/promises";
 import bodyParser from "body-parser";
 import { config } from "dotenv-flow";
-import { fileURLToPath } from "url";
-
-import path from "path";
-import functionCalling from "./openAI/functionCalling.js";
-import convertToWav from "./openAI/utils/convertToWav.js";
 config({ path: "./", silent: true });
 import getOpenAiInstance from "./openAI/utils/openai.js";
 
 const app = express();
 
-const port = 5000;
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
@@ -53,45 +47,60 @@ app.post("/generate-recipe", async (req, res) => {
   try {
     const recipeResponse = await openai.completions.create({
       // gpt-3.5-turbo-instruct
-      //  model: "gpt-3.5-turbo-instruct",
-      model: "text-davinci-003",
+       model: "gpt-3.5-turbo-instruct",
+      // model: "text-davinci-003",
       prompt: prompt,
-      max_tokens:100,
+      max_tokens: 500,
       temperature: 1,
       // stop: ":",
-      // presence_penalty: 2,
+      presence_penalty: 2,
       // seed: 42,
       // n: 2,
     });
 
     // Extract the recipe text from the response
-    console.log("recipeResponse completions data:", recipeResponse);
+    console.log("recipeResponse completions data: ", recipeResponse);
     console.log("====================");
 
     const recipeText = recipeResponse.choices[0].text.trim();
-    console.log("recipeText", recipeText);
+    if (!recipeText) {
+      throw new Error("recipe text error")
+    }
+    console.log("recipeText: ", recipeText);
     console.log("====================");
 
-    // Call DALL-E to generate an image for the recipe
-    // const imageData = await openai.createImage({
-    //   prompt: `A photo of a dish made with ${ingredients.join(
-    //     ', '
-    //   )} as described: ${recipeText}`,
-    //   n: 1,
-    //   size: 'medium',
-    // })
+    const promptToImage = `A photo of a dish made with ${ingredients.join(
+      ", "
+    )} as described: ${recipeText}`;
+    console.log("promptToImage", promptToImage);
 
-    // Extract the image URL from the response
-    // const imageUrl = imageData.data.data[0].url
+    const imageData = await openai.images.generate({
+      model: "dall-e-3",
+      prompt: promptToImage,
+      size: "1024x1024",
+      n: 1,
+      quality: "standard"
+    });
+    console.log("imageData: ", recipeResponse);
+    console.log("====================");
 
-    // Send the recipe text and image URL in the response
-    // res.json({ recipe: recipeText, imageUrl: imageUrl })
-    res.json({ recipe: recipeText });
+    if (!imageData.data[0]) {
+      throw new Error("revised prompt error")
+    }
+  
+    const revisedPromptDescription =  imageData.data[0].revised_prompt    
+    const revisedPromptURL =  imageData.data[0].url    
+
+      res.status(200).json({
+        success: true,
+        data: {recipeText, revisedPromptDescription, revisedPromptURL}
+      });    
   } catch (error) {
     console.error("Error generating recipe:", error);
     res.status(500).send("Error generating recipe");
   }
 });
+
 app.post("/analyze-image", upload.single("image"), async (req, res) => {
   try {
     const userQuestion = req.body.question || "What’s in this image?";
@@ -103,6 +112,7 @@ app.post("/analyze-image", upload.single("image"), async (req, res) => {
       dataUrl = `data:image/jpeg;base64,${base64Image}`;
     }
 
+    // STEP 1: Analyze the image
     const openai = getOpenAiInstance();
     const analysisResponse = await openai.chat.completions.create({
       model: "gpt-4-vision-preview",
@@ -120,10 +130,9 @@ app.post("/analyze-image", upload.single("image"), async (req, res) => {
         },
       ],
     });
-    
+
     // Extract description from the analysis response
-    const imageDescription =
-      analysisResponse.choices[0].message.content;
+    const imageDescription = analysisResponse.choices[0].message.content;
 
     // Ensure we have a valid description before prompting for a recipe
     if (!imageDescription) {
@@ -158,9 +167,7 @@ app.post("/analyze-image", upload.single("image"), async (req, res) => {
   }
 });
 
-
-
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
