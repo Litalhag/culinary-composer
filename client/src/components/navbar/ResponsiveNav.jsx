@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { IconButton, Menu, MenuItem, Typography, Box } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
+import { AuthContext } from '../../context/AuthContext'
 
 const ResponsiveNav = ({ pages, handleCloseNavMenu }) => {
+  const { user, logout } = useContext(AuthContext)
   const [anchorElNav, setAnchorElNav] = React.useState(null)
 
   const handleOpenNavMenu = (event) => {

@@ -1,9 +1,18 @@
 import React from 'react'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
-import { Home, About, Contact, UserProfile, PageNotFound } from './pages'
+import {
+  Home,
+  About,
+  Contact,
+  UserProfile,
+  PageNotFound,
+  Login,
+  Register,
+} from './pages'
 
 import SharedLayout from './components/SharedLayout'
+import { AuthProvider } from './context/AuthContext'
 
 const routes = [
   {
@@ -23,6 +32,14 @@ const routes = [
         element: <Contact />,
       },
       {
+        path: 'login',
+        element: <Login />,
+      },
+      {
+        path: 'register',
+        element: <Register />,
+      },
+      {
         path: 'user-profile',
         element: <UserProfile />,
       },
@@ -39,7 +56,9 @@ function App() {
   const router = createBrowserRouter(routes)
   return (
     <>
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </>
   )
 }

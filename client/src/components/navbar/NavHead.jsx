@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   Box,
   AppBar,
@@ -10,14 +10,19 @@ import {
 import RestaurantIcon from '@mui/icons-material/Restaurant'
 import ResponsiveNav from './ResponsiveNav'
 import { Link } from 'react-router-dom'
+import { AuthContext } from '../../context/AuthContext'
 
 const NavHead = () => {
+  const { user, logout } = useContext(AuthContext)
   const pages = [
     { label: 'Home', path: '/' },
     { label: 'About', path: '/about' },
     { label: 'Contact', path: '/contact' },
-    { label: 'User Profile', path: '/user-profile' },
   ]
+
+  if (user) {
+    pages = [...pages, { label: 'User Profile', path: '/user-profile' }]
+  }
 
   return (
     <AppBar position="static" sx={{ background: '#96B6C5' }}>
@@ -61,17 +66,35 @@ const NavHead = () => {
 
           {/* Register, Login */}
           <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center' }}>
-            <Button
-              component={Link}
-              to="/register"
-              color="inherit"
-              sx={{ mx: 1 }}
-            >
-              Register
-            </Button>
-            <Button component={Link} to="/login" color="inherit" sx={{ mx: 1 }}>
-              Login
-            </Button>
+            {user ? (
+              <>
+                <Typography sx={{ mx: 1, color: 'white' }}>
+                  {user.name}
+                </Typography>
+                <Button onClick={logout} color="inherit" sx={{ mx: 1 }}>
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  component={Link}
+                  to="/register"
+                  color="inherit"
+                  sx={{ mx: 1 }}
+                >
+                  Register
+                </Button>
+                <Button
+                  component={Link}
+                  to="/login"
+                  color="inherit"
+                  sx={{ mx: 1 }}
+                >
+                  Login
+                </Button>
+              </>
+            )}
           </Box>
         </Toolbar>
       </Container>
