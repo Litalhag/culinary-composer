@@ -1,63 +1,65 @@
-const express = require('express')
-const { OpenAI } = require('openai')
-const axios = require('axios')
-const dotenv = require('dotenv')
+const express = require("express");
+const { OpenAI, toFile } = require("openai");
+const axios = require("axios");
+const dotenv = require("dotenv");
+const cors = require("cors");
+const multer = require("multer");
+const colors = require('colors');
+const cookieParser = require('cookie-parser');
+const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const errorHandler = require('./middleware/error');
+const connectDB = require('./config/db');
 
 // Load env vars
-dotenv.config({ path: './config/config.env' })
+dotenv.config({ path: "./config/config.env" });
 
-const app = express()
-app.use(express.json())
+// Connect to database
+connectDB();
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
+const auth = require('./routes/auth');
+const recipes = require('./routes/recipes');
 
-// Endpoint to generate a recipe
-app.post('/generate-recipe', async (req, res) => {
-  const { ingredients, devices } = req.body
-  // Construct the prompt
-  const prompt = `Given these ingredients: ${ingredients.join(
-    ', '
-  )} and available kitchen devices: ${devices.join(
-    ', '
-  )}, create a detailed recipe with cooking instructions.`
+const app = express();
 
-  console.log(prompt)
+app.use(express.json());
 
-  try {
-    const recipeResponse = await openai.createCompletion({
-      model: 'gpt-3.5-turbo-instruct',
-      prompt: prompt,
-      max_tokens: 500,
-    })
+app.use(cookieParser());
 
-    // Extract the recipe text from the response
-    const recipeText = recipeResponse.data.choices[0].text.trim()
-    console.log(recipeText)
 
-    // Call DALL-E to generate an image for the recipe
-    // const imageData = await openai.createImage({
-    //   prompt: `A photo of a dish made with ${ingredients.join(
-    //     ', '
-    //   )} as described: ${recipeText}`,
-    //   n: 1,
-    //   size: 'medium',
-    // })
+// Sanitize data
+app.use(mongoSanitize());
 
-    // Extract the image URL from the response
-    const imageUrl = imageData.data.data[0].url
+// Set security headers
+app.use(helmet());
 
-    // Send the recipe text and image URL in the response
-    res.json({ recipe: recipeText, imageUrl: imageUrl })
-  } catch (error) {
-    console.error('Error generating recipe:', error)
-    res.status(500).send('Error generating recipe')
-  }
-})
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000, // 10 mins
+  max: 5
+});
+app.use(limiter); 
 
-const PORT = process.env.PORT || 5001
+// Enable CORS
+app.use(cors());
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
+app.use('/api/v1/auth', auth);
+app.use('/api/v1/recipes', recipes);
+
+app.use(errorHandler);
+
+const PORT = process.env.PORT || 5001;
+const server = app.listen(
+  PORT,
+  console.log(
+    `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold
+  )
+);
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (err, promise) => {
+  console.log(`Error: ${err.message}`.red);
+  // Close server & exit process
+  // server.close(() => process.exit(1));
+});
