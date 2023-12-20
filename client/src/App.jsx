@@ -1,7 +1,7 @@
 import React from 'react'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
-import { Home, About, PageNotFound } from './pages'
+import { Home, About, Contact, UserProfile, PageNotFound } from './pages'
 
 import SharedLayout from './components/SharedLayout'
 
@@ -18,6 +18,15 @@ const routes = [
         path: 'about',
         element: <About />,
       },
+      {
+        path: 'contact',
+        element: <Contact />,
+      },
+      {
+        path: 'user-profile',
+        element: <UserProfile />,
+      },
+
       {
         path: '*',
         element: <PageNotFound />,

@@ -1,16 +1,23 @@
 import React from 'react'
-import AppBar from '@mui/material/AppBar'
-import Box from '@mui/material/Box'
-import Toolbar from '@mui/material/Toolbar'
-import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
-import Button from '@mui/material/Button'
+import {
+  Box,
+  AppBar,
+  Toolbar,
+  Typography,
+  Container,
+  Button,
+} from '@mui/material'
 import RestaurantIcon from '@mui/icons-material/Restaurant'
 import ResponsiveNav from './ResponsiveNav'
 import { Link } from 'react-router-dom'
 
 const NavHead = () => {
-  const pages = ['Home', 'About', 'Recipe Composer', 'Contact']
+  const pages = [
+    { label: 'Home', path: '/' },
+    { label: 'About', path: '/about' },
+    { label: 'Contact', path: '/contact' },
+    { label: 'User Profile', path: '/user-profile' },
+  ]
 
   return (
     <AppBar position="static" sx={{ background: '#96B6C5' }}>
@@ -23,7 +30,6 @@ const NavHead = () => {
             noWrap
             component={Link}
             to="/"
-            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -41,22 +47,29 @@ const NavHead = () => {
           <ResponsiveNav pages={pages} />
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+            {pages.map((page, index) => (
               <Button
-                key={page}
+                key={index}
+                component={Link}
+                to={page.path}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page}
+                {page.label}
               </Button>
             ))}
           </Box>
 
-          {/* Register, Login) */}
+          {/* Register, Login */}
           <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center' }}>
-            <Button component={Link} to="/about" color="inherit" sx={{ mx: 1 }}>
+            <Button
+              component={Link}
+              to="/register"
+              color="inherit"
+              sx={{ mx: 1 }}
+            >
               Register
             </Button>
-            <Button component={Link} to="/about" color="inherit" sx={{ mx: 1 }}>
+            <Button component={Link} to="/login" color="inherit" sx={{ mx: 1 }}>
               Login
             </Button>
           </Box>

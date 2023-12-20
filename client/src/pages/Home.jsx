@@ -1,15 +1,19 @@
 import React from 'react'
 import Showcase from '../components/Showcase'
-import IngredientAutocomplete from '../components/IngredientAutocomplete'
-import KitchenAppliancesSelect from '../components/KitchenAppliancesSelect'
-import PeopleNumberInput from '../components/PeopleNumberInput'
+// import RecipeForm from '../components/RecipeForm/RecipeForm'
+import WelcomeText from '../components/WelcomeText'
+import RecipeComponent from '../components/RecipeComponent/RecipeComponent'
+import ImageInHome from '../components/ImageInHome'
+
 const Home = () => {
   return (
     <>
       <Showcase />
-      <IngredientAutocomplete />
-      <KitchenAppliancesSelect />
-      <PeopleNumberInput />
+      <WelcomeText />
+      <ImageInHome />
+
+      {/* <RecipeForm /> */}
+      <RecipeComponent />
     </>
   )
 }

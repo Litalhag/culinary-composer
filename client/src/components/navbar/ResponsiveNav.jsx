@@ -42,8 +42,8 @@ const ResponsiveNav = ({ pages, handleCloseNavMenu }) => {
         onClose={handleCloseMenu}
       >
         {pages.map((page) => (
-          <MenuItem key={page} onClick={handleCloseMenu}>
-            <Typography textAlign="center">{page}</Typography>
+          <MenuItem key={page.label} onClick={handleCloseMenu}>
+            <Typography textAlign="center">{page.label}</Typography>
           </MenuItem>
         ))}
       </Menu>

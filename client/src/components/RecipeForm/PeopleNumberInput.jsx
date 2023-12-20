@@ -18,7 +18,13 @@ const PeopleNumberInput = ({ onPeopleNumberChange }) => {
       value={peopleNumber}
       onChange={handleChange}
       inputProps={{ min: 1, max: 20 }}
-      sx={{ width: 100, m: 1 }}
+      sx={{
+        width: 130,
+        m: 1,
+        '.MuiInputBase-input': {
+          textAlign: 'center',
+        },
+      }}
     />
   )
 }

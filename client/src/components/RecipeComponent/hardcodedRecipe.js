@@ -1,0 +1,41 @@
+const hardcodedRecipe = {
+  title: 'Baked Chicken with Rice and Broccoli',
+  ingredients: [
+    '4 chicken breasts',
+    '1 cup of white rice',
+    '2 cups of chicken broth',
+    '1 head of broccoli',
+    '1 teaspoon garlic powder',
+    '1 teaspoon paprika',
+    '1 teaspoon salt',
+    '1 teaspoon black pepper',
+    '1 tablespoon olive oil',
+  ],
+  devices: [
+    'Oven',
+    'Stove',
+    'Baking dish',
+    'Medium pot',
+    'Baking sheet',
+    'Aluminum foil',
+    'Spatula',
+  ],
+  instructions: [
+    'Preheat your oven to 375°F (190°C).',
+    'Rinse the rice until the water runs clear and drain.',
+    'In a medium pot, combine the 1 cup of rice and 2 cups of chicken broth. Bring to a boil and then reduce the heat to low and let it simmer for 18 minutes.',
+    'While the rice is cooking, prep the chicken and broccoli. Pat the chicken breast dry with a paper towel and place them on a cutting board. Season both sides of the chicken with garlic powder, paprika, salt, and black pepper.',
+    'Cut the head of broccoli into bite-sized florets.',
+    'In a separate baking dish, place the chicken breast and add a tablespoon of olive oil. Coat the chicken breast with the oil.',
+    'Once the rice has cooked for 18 minutes, fluff it with a fork and add it to the baking dish with the chicken. Mix the rice and chicken together.',
+    'Place the broccoli florets on a baking sheet and drizzle with olive oil, salt, and black pepper.',
+    'Cover the baking dish with aluminum foil and place it in the oven.',
+    'Place the baking sheet of broccoli in the oven as well.',
+    'Bake the chicken, rice, and broccoli for 25 minutes.',
+    'After 25 minutes, remove the foil from the baking dish and continue baking for an additional 10 minutes to allow the chicken to brown.',
+    'Remove the chicken, rice, and broccoli from the oven and let it rest for 5 minutes.',
+    'Serve the baked chicken, rice, and broccoli on a plate and enjoy your delicious and nutritious meal!',
+  ],
+}
+
+export default hardcodedRecipe
