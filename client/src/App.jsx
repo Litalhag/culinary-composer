@@ -1,15 +1,43 @@
-import React from 'react'
-import './index.css'
-import NavHead from './components/navbar/NavHead'
-import Footer from './components/Footer'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+
+
+import {
+  Home
+} from './pages';
+
+import SharedLayout from './components/SharedLayout';
+
+
+const routes = [
+  {
+    path: '/',
+    element: <SharedLayout />,
+    children: [
+      {
+        index: true,
+        element: <Home />
+      },
+      {
+        path: 'about',
+        element: <About />,
+      },
+      {
+        path: '*',
+        element: <NotFound />
+      }
+    ]
+  }
+
+];
 
 function App() {
+  const router = createBrowserRouter(routes);
   return (
     <>
-      <NavHead />
-      <Footer />
+      <RouterProvider router={router} />
     </>
   )
 }
 
 export default App
+
