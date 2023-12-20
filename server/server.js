@@ -12,7 +12,6 @@ const rateLimit = require('express-rate-limit');
 const errorHandler = require('./middleware/error');
 const connectDB = require('./config/db');
 
-////
 // Load env vars
 dotenv.config({ path: "./config/config.env" });
 
