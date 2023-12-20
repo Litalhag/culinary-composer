@@ -1,9 +1,10 @@
 import axios from 'axios';
 
-import { showToast } from '../utils';
+// import { showToast } from '../utils';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const URL = `${BASE_URL}/api/v1`;
+console.log(URL);
 
 // Create a new instance of the axios library with a base URL of '/api/v1'
 const API = axios.create({ URL });
@@ -17,19 +18,14 @@ export const setAuthToken = (token) => {
     }
 };
 
-export const registerUser = async (userData) => {
-    const res = await axios.get(`${URL}/auth/register`);
-    return res.data.data;
-}
-export const loginUser = async (email, password) => {
-    const res = await axios.get(`${URL}/auth/login`);
-    return res.data.data;
-}
-export const logoutUser = async (email, password) => {
-    const res = await axios.get(`${URL}/auth/logout`);
-    return res.data.data;
-}
-export const getCurrentUser = async () => {
-    const res = await axios.get(`${URL}/auth/me`);
-    return res.data.data;
-}
+// Auth API endpoints
+export const authAPI = {
+    // Register a new user
+    register: (userData) => API.post('/auth/register', userData),
+    // Login a user
+    login: (email, password) => API.post('/auth/login', { email, password }),
+    // Logout a user
+    logout: () => API.get('/auth/logout'),
+    // Get the current user
+    getCurrentUser: () => API.get('/auth/me'),
+};

@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { setAuthToken, loginUser, registerUser, logoutUser, getCurrentUser } from '../api';
-import { handleError } from '../utils';
+import { setAuthToken, authAPI } from '../api';
+import { showToast } from '../utils';
 
 export const AuthContext = createContext();
 
@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
             setAuthToken(localStorage.token);
             try {
                 const res = await authAPI.getCurrentUser();
-                setUser(res.data);
+                setUser(res.data.data);
             } catch (err) {
                 handleError(err);
                 setUser(null);
@@ -28,17 +28,27 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         loadUser();
+        // eslint-disable-next-line
     }, []);
 
     const handleAuthSuccess = (res) => {
-        localStorage.setItem('token', res.data);
+        localStorage.setItem('token', res.data.token);
         loadUser();
     };
 
+    const handleError = (err) => {
+        let errorMessage = err.response.data.error;
+        if (errorMessage.includes('Duplicate')) {
+            errorMessage = 'This email is already in use';
+        } else if (!errorMessage) {
+            'An unknown error occurred';
+        }
+        showToast(errorMessage, 'error');
+    };
 
     const login = async (email, password) => {
         try {
-            const res = await loginUser(email, password);
+            const res = await authAPI.login(email, password);
             handleAuthSuccess(res);
         } catch (err) {
             handleError(err);
@@ -47,7 +57,8 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (formData) => {
         try {
-            const res = await registerUser(formData);
+            const res = await authAPI.register(formData);
+            console.log(res);
             handleAuthSuccess(res);
         } catch (err) {
             handleError(err);
@@ -56,7 +67,7 @@ export const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            await logoutUser();
+            await authAPI.logout();
             localStorage.removeItem('token');
             setUser(null);
         } catch (err) {
