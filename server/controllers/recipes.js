@@ -31,7 +31,6 @@ exports.GetUserRecipe = asyncHandler(async (req, res, next) => {
       new ErrorResponse(`Recipe not found with id of ${req.params.id}`, 404)
     );
   }
-  console.log("💥", recipe);
 
   res.status(200).json(recipe);
 });
@@ -111,9 +110,7 @@ exports.CreateByText = asyncHandler(async (req, res, next) => {
       revisedPromptURL,
     });
 
-    res.status(200).json(
-      recipe
-    );
+    res.status(200).json(recipe);
   } catch (error) {
     console.error('Error generating recipe:', error);
     res.status(500).send('Error generating recipe');
