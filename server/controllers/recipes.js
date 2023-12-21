@@ -123,7 +123,7 @@ exports.CreateByText = asyncHandler(async (req, res, next) => {
     })
     res.status(200).json({
       success: true,
-      data: { recipeText, revisedPromptDescription, revisedPromptURL },
+      data: { _id: recipe._id, recipeText, revisedPromptDescription, revisedPromptURL },
     })
   } catch (error) {
     console.error('Error generating recipe:', error)
