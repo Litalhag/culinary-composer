@@ -11,6 +11,11 @@ const RecipeSchema = new mongoose.Schema(
     },
     revisedPromptURL:{
       type: String,
+    },
+    user: {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+      required: true,
     }
   },
   

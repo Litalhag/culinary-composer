@@ -19,7 +19,7 @@ const UserSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    default: 'publisher'
+    default: 'user'
   },
   password: {
     type: String,
@@ -73,5 +73,13 @@ UserSchema.methods.getResetPasswordToken = function() {
 
   return resetToken;
 };
+
+// Reverse populate with virtual field/attr
+UserSchema.virtual('recipes', {
+  ref: 'Recipe',
+  localField: '_id',
+  foreignField: 'user',
+  justOne: false,
+});
 
 export default mongoose.model('User', UserSchema);

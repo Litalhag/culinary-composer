@@ -1,21 +1,31 @@
+import path from "path";
+import { fileURLToPath } from "url";
+
 import express from "express";
-import { OpenAI } from "openai";
-import axios from "axios";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import colors from "colors";
+import fileUpload from "express-fileupload";
+import {errorHandler} from "./middleware/errorHandler.js";
+import {connectDB} from "./config/db.js";
+
+//Load env vars (due to configuration in a separate file (e.g., config.env), we should specify the path when calling dotenv.config():
+dotenv.config({ path: "config/config.env" });
+
+// Connect to database
+connectDB();
+
+
 import cors from "cors";
-import multer from "multer";
-import colors from 'colors';
-import fs from "fs/promises";
-import cookieParser from 'cookie-parser';
+
 import bodyParser from "body-parser";
 import { config } from "dotenv-flow";
 config({ path: "./", silent: true });
 import mongoSanitize from 'express-mongo-sanitize';
-// import getOpenAiInstance from "./openAI/openai.js";
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
-import {errorHandler} from './middleware/error.js';
-import {connectDB} from './config/db.js';
+
+
 
 // Load env vars
 dotenv.config({ path: "./config/config.env" });
@@ -23,8 +33,10 @@ dotenv.config({ path: "./config/config.env" });
 // Connect to database
 connectDB();
 
-import auth from './routes/auth.js';
-import recipes from './routes/recipes.js';
+// Route files
+import authRoutes from "./routes/authRoutes.js";
+import usersRoutes from "./routes/usersRoutes.js"
+import recipesRoutes from "./routes/recipesRoutes.js"
 
 const app = express();
 
@@ -52,8 +64,25 @@ app.use(limiter);
 // Enable CORS
 app.use(cors());
 
-app.use('/api/v1/auth', auth);
-app.use('/api/v1/recipes', recipes);
+// app.use('/api/v1/auth', auth);
+// app.use('/api/v1/recipes', recipes);
+
+// File uploading (such as a photo for a bootcamp)
+app.use(fileUpload());
+
+// Set static folder
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static(path.join(__dirname, "public")));
+
+// Mount routes
+// app.use("/api/v1/auth", authRoutes);
+// app.use("/api/v1/users", usersRoutes);
+
+
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/users", usersRoutes);
+app.use("/api/v1/recipes", recipesRoutes);
 
 app.use(errorHandler);
 
@@ -71,3 +100,4 @@ process.on('unhandledRejection', (err, promise) => {
   // Close server & exit process
   // server.close(() => process.exit(1));
 });
+
