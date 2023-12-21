@@ -1,0 +1,15 @@
+.btn {
+  display: inline-block;
+  font-size: 1.2rem;
+  color: white;
+  background: #96b6c5;
+  padding: 1rem 1.5rem;
+  border-radius: 0.6rem;
+  border: none;
+  cursor: pointer;
+}
+.update-btn {
+  width: 8rem;
+  text-align: center;
+  margin: 2rem 20rem;
+}
