@@ -1,16 +1,21 @@
-const express = require("express");
-const { OpenAI, toFile } = require("openai");
-const axios = require("axios");
-const dotenv = require("dotenv");
-const cors = require("cors");
-const multer = require("multer");
-const colors = require('colors');
-const cookieParser = require('cookie-parser');
-const mongoSanitize = require('express-mongo-sanitize');
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
-const errorHandler = require('./middleware/error');
-const connectDB = require('./config/db');
+import express from "express";
+import { OpenAI } from "openai";
+import axios from "axios";
+import dotenv from "dotenv";
+import cors from "cors";
+import multer from "multer";
+import colors from 'colors';
+import fs from "fs/promises";
+import cookieParser from 'cookie-parser';
+import bodyParser from "body-parser";
+import { config } from "dotenv-flow";
+config({ path: "./", silent: true });
+import mongoSanitize from 'express-mongo-sanitize';
+// import getOpenAiInstance from "./openAI/openai.js";
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import {errorHandler} from './middleware/error.js';
+import {connectDB} from './config/db.js';
 
 // Load env vars
 dotenv.config({ path: "./config/config.env" });
@@ -18,12 +23,15 @@ dotenv.config({ path: "./config/config.env" });
 // Connect to database
 connectDB();
 
-const auth = require('./routes/auth');
-const recipes = require('./routes/recipes');
+import auth from './routes/auth.js';
+import recipes from './routes/recipes.js';
 
 const app = express();
 
 app.use(express.json());
+
+app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser());
 

@@ -1,19 +1,20 @@
-const express = require("express");
+import express from "express";
 
-const {
+import {
   GetUserRecipes,
   GetUserRecipe,
-  CreateByCriteria,
+  CreateByText,
   // CreateByImage,
-} = require("../controllers/recipes");
+} from "../controllers/recipes.js";
 
 const router = express.Router();
 
-const { protect, authorize } = require("../middleware/auth");
+import { protect, authorize } from "../middleware/auth.js";
+
 
 router
   .route("/create")
-  .post(protect, authorize("publisher", "admin"), CreateByCriteria);
+  .post(protect, authorize("publisher", "admin"), CreateByText);
 
 // router
 //   .route("/upload")
@@ -25,4 +26,4 @@ router
   .route("/:id")
   .get(protect, authorize("publisher", "admin"), GetUserRecipe);
 
-module.exports = router;
+export default router;

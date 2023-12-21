@@ -1,12 +1,19 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
+
 
 const RecipeSchema = new mongoose.Schema(
   {
-    Answer: {
+    recipeText: {
       type: String,
     },
+    revisedPromptDescription:{
+      type: String,
+    },
+    revisedPromptURL:{
+      type: String,
+    }
   },
   
 );
 
-module.exports = mongoose.model('Recipe', RecipeSchema);
+export default mongoose.model('Recipe', RecipeSchema);
