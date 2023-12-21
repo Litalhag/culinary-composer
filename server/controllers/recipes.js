@@ -63,8 +63,6 @@ exports.CreateByText = asyncHandler(async (req, res, next) => {
   };
   const openai = new OpenAI(configuration);
 
-  console.log(prompt);
-
   try {
     const recipeResponse = await openai.completions.create({
       // gpt-3.5-turbo-instruct

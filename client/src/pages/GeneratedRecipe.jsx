@@ -13,11 +13,23 @@ const GeneratedRecipe = () => {
     }
   }, [recipeId, fetchRecipe])
 
-  return currentRecipe ? (
-    <RecipeCard recipe={currentRecipe} />
-  ) : (
-    <p>Loading recipe...</p>
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        width: '100%',
+      }}
+    >
+      {currentRecipe ? (
+        <RecipeCard recipe={currentRecipe} />
+      ) : (
+        <p>Loading recipe...</p>
+      )}
+    </Box>
   )
 }
 
-export default GeneratedRecipe
+export default GeneratedRecipe;
