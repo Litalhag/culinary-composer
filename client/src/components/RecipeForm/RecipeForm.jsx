@@ -39,8 +39,8 @@ const RecipeForm = () => {
       const response = await addNewRecipe(promptDetails)
       // const recipeData = JSON.stringify(response.data)
       console.log('Navigating with recipeData:', response)
-      if (response && response._id) {
-        navigate(`/generatedRecipe/${response._id}`)
+      if (response && response.data._id) {
+        navigate(`/generatedRecipe/${response.data._id}`)
       } else {
         console.log('Recipe creation response is missing _id')
       }
