@@ -17,6 +17,7 @@ const RecipeCard = ({ recipe }) => {
         <Typography gutterBottom variant="h5" component="div">
           Recipe
         </Typography>
+        <Typography>{recipe.revisedPromptDescription}</Typography>
         <Typography variant="body2" color="text.secondary">
           {recipe.recipeText.split('\n').map((line, index) => (
             <React.Fragment key={index}>

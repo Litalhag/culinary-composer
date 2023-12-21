@@ -22,7 +22,6 @@ const UserProfile = () => {
           </Grid>
         ))}
       </Grid>
-      {selectedRecipe && <RecipeComponent recipe={selectedRecipe} />}
     </Container>
   )
 }

@@ -5,7 +5,7 @@ import KitchenDevicesSelect from './KitchenDevicesSelect'
 import PeopleNumberInput from './PeopleNumberInput'
 import SubmitButton from './SubmitButton'
 import { useNavigate } from 'react-router-dom'
-import { recipeAPI } from '../../api'
+// import { recipeAPI } from '../../api'
 import { useGlobalRecipeContext } from '../../Hooks/useGlobalRecipeContext.js'
 
 const RecipeForm = () => {
@@ -37,17 +37,21 @@ const RecipeForm = () => {
     console.log('Submitting Form with Data:', promptDetails)
     try {
       const response = await addNewRecipe(promptDetails)
-      // console.log('Form Submitted Successfully:', response.data)
-      console.log('Form Submitted Successfully:', response)
       // const recipeData = JSON.stringify(response.data)
-      // console.log('Navigating with recipeData:', recipeData)
-      // navigate(`/generatedRecipe/${encodeURIComponent(recipeData)}`)
-      const recipeId = response.data?._id
-      if (recipeId) {
-        navigate(`/generatedRecipe/${recipeId}`)
+      console.log('Navigating with recipeData:', response)
+      if (response && response._id) {
+        navigate(`/generatedRecipe/${response._id}`)
       } else {
-        console.log('No recipe ID received')
+        console.log('Recipe creation response is missing _id')
       }
+      // navigate(`/generatedRecipe/${encodeURIComponent(recipeData)}`)
+      // navigate(`/generatedRecipe`)
+      // const recipeId = response.data?._id
+      // if (recipeId) {
+      //   navigate(`/generatedRecipe/${recipeId}`)
+      // } else {
+      //   console.log('No recipe ID received')
+      // }
     } catch (error) {
       console.error('Error submitting form:', error)
     }

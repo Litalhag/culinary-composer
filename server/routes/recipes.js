@@ -1,28 +1,23 @@
-const express = require("express");
+const express = require('express')
 
 const {
   GetUserRecipes,
   GetUserRecipe,
-  CreateByCriteria,
-  // CreateByImage,
-} = require("../controllers/recipes");
+  CreateByText,
+} = require('../controllers/recipes')
 
-const router = express.Router();
+const router = express.Router()
 
-const { protect, authorize } = require("../middleware/auth");
+const { protect } = require('../middleware/auth')
 
-router
-  .route("/create")
-  .post(protect, authorize("publisher", "admin"), CreateByCriteria);
+router.route('/create').post(protect, CreateByText)
 
 // router
 //   .route("/upload")
 //   .post(protect, authorize("publisher", "admin"), CreateByImage);
 
-router.route("/").get(protect, authorize("publisher", "admin"), GetUserRecipes);
+router.route('/').get(protect, GetUserRecipes)
 
-router
-  .route("/:id")
-  .get(protect, authorize("publisher", "admin"), GetUserRecipe);
+router.route('/:id').get(protect, GetUserRecipe)
 
-module.exports = router;
+module.exports = router

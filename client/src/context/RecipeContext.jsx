@@ -27,7 +27,9 @@ export const RecipeProvider = ({ children }) => {
     setIsLoading(true)
     try {
       const response = await recipeAPI.getRecipe(recipeId)
-      setCurrentRecipe(response.data.data)
+      console.log('Fetch Recipe Data:', response.data)
+      setCurrentRecipe(response.data)
+      console.log('Current Recipe:', currentRecipe)
     } catch (err) {
       showToast(err.response?.data?.error || 'An error occurred', 'error')
     } finally {

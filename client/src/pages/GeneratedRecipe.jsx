@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react' // Import useEffect here
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import RecipeCard from '../components/RecipeCard'
 import { useGlobalRecipeContext } from '../Hooks/useGlobalRecipeContext'
