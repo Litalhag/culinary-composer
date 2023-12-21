@@ -66,7 +66,6 @@ const ingredientsList = [
   'Milk',
   'Cheese',
   'Eggs',
-  'Yogurt',
   'Quinoa',
   'Couscous',
   'Barley',

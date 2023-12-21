@@ -9,10 +9,10 @@ import {
   PageNotFound,
   Login,
   Register,
+  GeneratedRecipe,
 } from './pages'
 
 import SharedLayout from './components/SharedLayout'
-import { AuthProvider } from './context/AuthContext'
 
 const routes = [
   {
@@ -43,6 +43,15 @@ const routes = [
         path: 'user-profile',
         element: <UserProfile />,
       },
+      {
+        path: 'generatedRecipe',
+        children: [
+          {
+            path: ':recipeId',
+            element: <GeneratedRecipe />,
+          },
+        ],
+      },
 
       {
         path: '*',
@@ -56,9 +65,7 @@ function App() {
   const router = createBrowserRouter(routes)
   return (
     <>
-      <AuthProvider>
-        <RouterProvider router={router} />
-      </AuthProvider>
+      <RouterProvider router={router} />
     </>
   )
 }

@@ -10,10 +10,10 @@ import {
 import RestaurantIcon from '@mui/icons-material/Restaurant'
 import ResponsiveNav from './ResponsiveNav'
 import { Link } from 'react-router-dom'
-import { AuthContext } from '../../context/AuthContext'
+import { useGlobalAuthContext } from '../../Hooks/useGlobalAuthContext'
 
 const NavHead = () => {
-  const { user, logout } = useContext(AuthContext)
+  const { user, logout } = useGlobalAuthContext()
   const pages = [
     { label: 'Home', path: '/' },
     { label: 'About', path: '/about' },
@@ -21,7 +21,7 @@ const NavHead = () => {
   ]
 
   if (user) {
-    pages = [...pages, { label: 'User Profile', path: '/user-profile' }]
+    pages.push({ label: 'User Profile', path: '/user-profile' })
   }
 
   return (

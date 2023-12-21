@@ -1,31 +1,27 @@
 import React, { useState } from 'react'
-import { Box, Typography, Container } from '@mui/material'
+import { Box, Typography, Container, Grid } from '@mui/material'
 import RecipeCard from '../components/RecipeCard'
-import RecipeComponent from '../components/RecipeComponent/RecipeComponent'
+import { useGlobalAuthContext } from '../Hooks/useGlobalAuthContext'
+import { useGlobalRecipeContext } from '../Hooks/useGlobalRecipeContext'
 
-const UserProfile = ({ user }) => {
+const UserProfile = () => {
   const [selectedRecipe, setSelectedRecipe] = useState(null)
-
-  const handleExpandRecipe = (recipe) => {
-    setSelectedRecipe(recipe)
-  }
+  const { user } = useGlobalAuthContext()
+  const { recipes } = useGlobalRecipeContext()
 
   return (
     <Container>
       <Box sx={{ my: 4 }}>
-        <Typography variant="h4">{user.name}</Typography>
-        <Typography variant="body1">{user.email}</Typography>
-        <Typography variant="body1">Joined: {user.dateCreated}</Typography>
+        <Typography variant="h4">{user?.name}</Typography>
+        <Typography variant="body1">{user?.email}</Typography>
       </Box>
-      <Box>
-        {user.recipes.map((recipe, index) => (
-          <RecipeCard
-            key={index}
-            recipe={recipe}
-            onExpand={handleExpandRecipe}
-          />
+      <Grid container spacing={2}>
+        {recipes.map((recipe, index) => (
+          <Grid item xs={12} sm={6} md={4} key={index}>
+            <RecipeCard recipe={recipe} />
+          </Grid>
         ))}
-      </Box>
+      </Grid>
       {selectedRecipe && <RecipeComponent recipe={selectedRecipe} />}
     </Container>
   )

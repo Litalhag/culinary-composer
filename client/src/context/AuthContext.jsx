@@ -1,12 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react'
-import {
-  setAuthToken,
-  loginUser,
-  registerUser,
-  logoutUser,
-  getCurrentUser,
-} from '../api'
-import { showToast, handleError } from '../utils'
+import { setAuthToken, authAPI } from '../api'
+import { showToast } from '../utils'
 
 export const AuthContext = createContext()
 
@@ -18,13 +12,12 @@ export const AuthProvider = ({ children }) => {
     if (localStorage.token) {
       setAuthToken(localStorage.token)
       try {
-        const res = await getCurrentUser()
-        console.log('helloooooo', res.data.data)
+        const res = await authAPI.getCurrentUser()
         setUser(res.data.data)
       } catch (err) {
         handleError(err)
-        // setUser(null);
-        // localStorage.removeItem('token');
+        setUser(null)
+        localStorage.removeItem('token')
       } finally {
         setLoading(false)
       }
@@ -35,17 +28,28 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     loadUser()
+    // eslint-disable-next-line
   }, [])
 
+  const handleError = (err) => {
+    let errorMessage = err.response.data.error
+    if (errorMessage.includes('Duplicate')) {
+      errorMessage = 'This email is already in use'
+    } else if (!errorMessage) {
+      ;('An unknown error occurred')
+    }
+    showToast(errorMessage, 'error')
+  }
+
   const handleAuthSuccess = (res) => {
-    console.log('success', res.data.token)
     localStorage.setItem('token', res.data.token)
+    setAuthToken(res.data.token)
     loadUser()
   }
 
   const login = async (email, password) => {
     try {
-      const res = await loginUser(email, password)
+      const res = await authAPI.login(email, password)
       handleAuthSuccess(res)
     } catch (err) {
       handleError(err)
@@ -54,8 +58,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (formData) => {
     try {
-      const res = await registerUser(formData)
-      console.log('daaaaaa', res.data.token)
+      const res = await authAPI.register(formData)
       handleAuthSuccess(res)
     } catch (err) {
       handleError(err)
@@ -64,7 +67,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await logoutUser()
+      await authAPI.logout()
       localStorage.removeItem('token')
       setUser(null)
     } catch (err) {

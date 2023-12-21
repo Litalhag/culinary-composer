@@ -1,9 +1,10 @@
 import { Button } from '@mui/material'
 import React from 'react'
 
-const SubmitButton = () => {
+const SubmitButton = ({ onClick }) => {
   return (
     <Button
+      onClick={onClick}
       variant="contained"
       sx={{
         marginTop: 2,
