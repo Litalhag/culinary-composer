@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import { useGlobalRecipeContext } from '../../Hooks/useGlobalRecipeContext.js'
 
 const RecipeForm = () => {
+  const [isLoading, setIsLoading] = useState(false)
   const { addNewRecipe } = useGlobalRecipeContext()
   const [promptDetails, setPromptDetails] = useState({
     ingredients: [],
@@ -36,6 +37,7 @@ const RecipeForm = () => {
   const handleSubmit = async () => {
     console.log('Submitting Form with Data:', promptDetails)
     try {
+      setIsLoading(true)
       const response = await addNewRecipe(promptDetails)
       // const recipeData = JSON.stringify(response.data)
       console.log('Navigating with recipeData:', response)
@@ -54,6 +56,8 @@ const RecipeForm = () => {
       // }
     } catch (error) {
       console.error('Error submitting form:', error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
