@@ -33,25 +33,41 @@ const RecipeForm = () => {
     setPromptDetails({ ...promptDetails, number })
   }
 
+  // const handleSubmit = async () => {
+  //   console.log('Submitting Form with Data:', promptDetails)
+  //   try {
+  //     const response = await addNewRecipe(promptDetails)
+  //     // const recipeData = JSON.stringify(response.data)
+  //     console.log('Navigating with recipeData:', response)
+  //     if (response && response.data._id) {
+  //       navigate(`/generatedRecipe/${response.data._id}`)
+  //     } else {
+  //       console.log('Recipe creation response is missing _id')
+  //     }
+  // navigate(`/generatedRecipe/${encodeURIComponent(recipeData)}`)
+  // navigate(`/generatedRecipe`)
+  // const recipeId = response.data?._id
+  // if (recipeId) {
+  //   navigate(`/generatedRecipe/${recipeId}`)
+  // } else {
+  //   console.log('No recipe ID received')
+  // }
+  //   } catch (error) {
+  //     console.error('Error submitting form:', error)
+  //   }
+  // }
   const handleSubmit = async () => {
     console.log('Submitting Form with Data:', promptDetails)
     try {
       const response = await addNewRecipe(promptDetails)
-      // const recipeData = JSON.stringify(response.data)
       console.log('Navigating with recipeData:', response)
-      if (response && response.data._id) {
-        navigate(`/generatedRecipe/${response.data._id}`)
+
+      // Check if response has an _id directly instead of response.data._id
+      if (response && response._id) {
+        navigate(`/generatedRecipe/${response._id}`)
       } else {
         console.log('Recipe creation response is missing _id')
       }
-      // navigate(`/generatedRecipe/${encodeURIComponent(recipeData)}`)
-      // navigate(`/generatedRecipe`)
-      // const recipeId = response.data?._id
-      // if (recipeId) {
-      //   navigate(`/generatedRecipe/${recipeId}`)
-      // } else {
-      //   console.log('No recipe ID received')
-      // }
     } catch (error) {
       console.error('Error submitting form:', error)
     }
@@ -71,8 +87,7 @@ const RecipeForm = () => {
         marginTop: 5,
         marginBottom: 1,
         width: 'fit-content',
-      }}
-    >
+      }}>
       <IngredientAutocomplete onIngredientSelect={handleIngredientSelect} />
       <KitchenDevicesSelect onDevicesSelect={handleDevicesSelect} />
       <PeopleNumberInput onPeopleNumberChange={handleNumberOfPeople} />

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import RecipeCard from '../components/RecipeCard'
 import { useGlobalRecipeContext } from '../Hooks/useGlobalRecipeContext'
-import { Box } from '@mui/material';
+import { Box } from '@mui/material'
 
 const GeneratedRecipe = () => {
   const { recipeId } = useParams()
@@ -22,8 +22,8 @@ const GeneratedRecipe = () => {
         alignItems: 'center',
         height: 'auto',
         width: '100%',
-      }}
-    >
+        background: '#cdd5dc',
+      }}>
       {currentRecipe ? (
         <RecipeCard recipe={currentRecipe} />
       ) : (
@@ -33,4 +33,4 @@ const GeneratedRecipe = () => {
   )
 }
 
-export default GeneratedRecipe;
+export default GeneratedRecipe

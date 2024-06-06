@@ -5,8 +5,10 @@ const RecipeCard = ({ recipe }) => {
   if (!recipe || !recipe.revisedPromptURL) {
     return <p>No recipe data available</p>
   }
+
+  console.log(recipe)
   return (
-    <Card sx={{ maxWidth: 345, m: 2 }}>
+    <Card sx={{ maxWidth: 1200, m: 2 }}>
       <CardMedia
         component="img"
         height="140"
